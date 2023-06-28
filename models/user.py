@@ -7,11 +7,13 @@ class User(db.Model):
     name = db.Column(db.String(100))
     email = db.Column(db.String(70), unique=True)
     password = db.Column(db.String(80))
+    date_joined = db.Column(db.DateTime(), nullable=True)
 
     @property
     def simple_serialize(self):
         return {
             'id': self.id,
             'name': self.name,
-            'email': self.email
+            'email': self.email,
+            'date_joined': self.date_joined
         }
