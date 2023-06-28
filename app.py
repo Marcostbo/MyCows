@@ -1,10 +1,11 @@
 # general imports
 import os
+import uuid
 # flask imports
 from flask import Flask, request, jsonify, make_response
-from flask_sqlalchemy import SQLAlchemy
-import uuid  # for public id
+from database import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from models.user import User
 # imports for PyJWT authentication
 import jwt
 from datetime import datetime, timedelta
@@ -12,32 +13,10 @@ from decorators.authentication import token_required
 
 # creates Flask object
 app = Flask(__name__)
-# configuration
-# NEVER HARDCODE YOUR CONFIGURATION IN YOUR CODE
-# INSTEAD CREATE A .env FILE AND STORE IN IT
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-# database name
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-# creates SQLALCHEMY object
-db = SQLAlchemy(app)
-
-
-# Database ORMs
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    public_id = db.Column(db.String(50), unique=True)
-    name = db.Column(db.String(100))
-    email = db.Column(db.String(70), unique=True)
-    password = db.Column(db.String(80))
-
-    @property
-    def simple_serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'email': self.email
-        }
+db.init_app(app)
 
 
 # User Database Route
