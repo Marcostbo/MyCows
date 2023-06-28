@@ -1,7 +1,7 @@
 import jwt
+import os
 from functools import wraps
 from flask import request, jsonify
-from app import User, app
 
 
 # Decorator for verifying the JWT
@@ -15,18 +15,14 @@ def token_required(f):
         # return 401 if token is not passed
         if not token:
             return jsonify({'message': 'Token is missing !!'}), 401
-
         try:
             # decoding the payload to fetch the stored details
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-            current_user = User.query \
-                .filter_by(public_id=data['public_id']) \
-                .first()
+            data = jwt.decode(token, os.getenv('SECRET_KEY'), algorithms=['HS256'])
         except Exception as err:
             return jsonify({
                 'message': f'Token is invalid. Error {err.__str__()}'
             }), 401
         # returns the current logged user context to the routes
-        return f(current_user, *args, **kwargs)
+        return f(data['public_id'], *args, **kwargs)
 
     return decorated

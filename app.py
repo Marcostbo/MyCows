@@ -1,3 +1,5 @@
+# general imports
+import os
 # flask imports
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
@@ -6,14 +8,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # imports for PyJWT authentication
 import jwt
 from datetime import datetime, timedelta
-from functools import wraps
+from decorators.authentication import token_required
 
 # creates Flask object
 app = Flask(__name__)
 # configuration
 # NEVER HARDCODE YOUR CONFIGURATION IN YOUR CODE
 # INSTEAD CREATE A .env FILE AND STORE IN IT
-app.config['SECRET_KEY'] = 'your secret key'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 # database name
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -30,39 +32,12 @@ class User(db.Model):
     password = db.Column(db.String(80))
 
 
-# Decorator for verifying the JWT
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        # jwt is passed in the request header
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
-        # return 401 if token is not passed
-        if not token:
-            return jsonify({'message': 'Token is missing !!'}), 401
-
-        try:
-            # decoding the payload to fetch the stored details
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
-            current_user = User.query \
-                .filter_by(public_id=data['public_id']) \
-                .first()
-        except Exception as err:
-            return jsonify({
-                'message': f'Token is invalid. Error {err.__str__()}'
-            }), 401
-        # returns the current logged user context to the routes
-        return f(current_user, *args, **kwargs)
-
-    return decorated
-
-
 # User Database Route
 # this route sends back list of users
 @app.route('/user', methods=['GET'])
 @token_required
-def get_all_users(current_user):
+def get_all_users(public_id):
+    current_user = User.query.filter_by(public_id=public_id).first()
     user = {
         'id': current_user.id,
         'name': current_user.name,
