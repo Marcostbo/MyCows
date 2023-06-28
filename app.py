@@ -31,6 +31,14 @@ class User(db.Model):
     email = db.Column(db.String(70), unique=True)
     password = db.Column(db.String(80))
 
+    @property
+    def simple_serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email
+        }
+
 
 # User Database Route
 # this route sends back list of users
@@ -38,12 +46,7 @@ class User(db.Model):
 @token_required
 def get_all_users(public_id):
     current_user = User.query.filter_by(public_id=public_id).first()
-    user = {
-        'id': current_user.id,
-        'name': current_user.name,
-        'email': current_user.email
-    }
-    return jsonify({'user': user})
+    return jsonify({'user': current_user.simple_serialize})
 
 
 # route for logging user in
