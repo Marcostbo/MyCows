@@ -15,7 +15,7 @@ user_bp = Blueprint('user', __name__)
 
 @user_bp.route('/user', methods=['GET'])
 @token_required
-def get_all_users(public_id):
+def get_logged_user(public_id):
     current_user = User.query.filter_by(public_id=public_id).first()
     return jsonify({'user': current_user.simple_serialize})
 
