@@ -2,7 +2,7 @@ from database import db
 
 
 class Cow(db.Model):
-    a = 1
+    owner = db.relationship('User')
 
 
 class Bull(db.Model):
