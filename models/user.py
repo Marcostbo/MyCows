@@ -8,6 +8,7 @@ class User(db.Model):
     email = db.Column(db.String(70), unique=True)
     password = db.Column(db.String(80))
     date_joined = db.Column(db.DateTime(), nullable=True)
+    cows = db.relationship('Cow', backref='owner', lazy=True)
 
     @property
     def simple_serialize(self):
