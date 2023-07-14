@@ -22,6 +22,14 @@ def get_all_cows(public_id):
     return jsonify({'cows': response})
 
 
+@cows_bp.route('/get-cows/<cow_id>', methods=['GET'])
+@token_required
+def get_cow_by_id(public_id, cow_id):
+    current_user = User.query.filter_by(public_id=public_id).first()
+    cow = Cow.query.filter_by(owner=current_user).filter_by(id=cow_id).first()
+    return jsonify({'cows': cow.simple_serialize})
+
+
 @cows_bp.route('/register-cow', methods=['POST'])
 @token_required
 def register_cow(public_id):
