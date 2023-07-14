@@ -15,9 +15,11 @@ cows_bp = Blueprint('cows', __name__)
 
 @cows_bp.route('/get-cows', methods=['GET'])
 @token_required
-def get_logged_user(public_id):
+def get_all_cows(public_id):
     current_user = User.query.filter_by(public_id=public_id).first()
-    return jsonify({'user': current_user.simple_serialize})
+    cows = Cow.query.filter_by(owner=current_user)
+    response = [cow.simple_serialize for cow in cows]
+    return jsonify({'cows': response})
 
 
 @cows_bp.route('/register-cow', methods=['POST'])
