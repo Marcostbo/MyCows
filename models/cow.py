@@ -5,6 +5,8 @@ class Cow(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # register_date
+    # birth_date
 
     @property
     def simple_serialize(self):

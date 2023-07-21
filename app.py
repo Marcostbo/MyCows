@@ -1,5 +1,6 @@
 import os
 
+import flask
 from flask import Flask
 from flask_migrate import Migrate
 from database import db
@@ -19,6 +20,10 @@ def create_app():
     
     db.init_app(app)
     migrate = Migrate(app, db)
+
+    @app.route('/health-check')
+    def health_check():
+        return flask.render_template("healthcheck.html")
 
     return app
 
