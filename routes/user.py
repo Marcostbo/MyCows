@@ -9,6 +9,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from database import db
 from decorators.authentication import token_required
 from models.user import User
+from schemas.user import UserSchema
 
 user_bp = Blueprint('user', __name__)
 
@@ -17,7 +18,7 @@ user_bp = Blueprint('user', __name__)
 @token_required
 def get_logged_user(public_id):
     current_user = User.query.filter_by(public_id=public_id).first()
-    return jsonify({'user': current_user.simple_serialize})
+    return jsonify(UserSchema().dump(obj=current_user))
 
 
 @user_bp.route('/login', methods=['POST'])
