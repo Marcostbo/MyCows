@@ -9,7 +9,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from database import db
 from decorators.authentication import token_required
 from models.user import User
-from schemas.user import UserSchema
+from schemas.user import UserSchema, UserTokenSchema
 
 user_bp = Blueprint('user', __name__)
 
@@ -52,8 +52,7 @@ def login():
             'public_id': user.public_id,
             'exp': datetime.utcnow() + timedelta(minutes=30)
         }, os.getenv('SECRET_KEY'))
-
-        return make_response(jsonify({'token': token}), 201)
+        return make_response(jsonify(UserTokenSchema().dump({'user': user, 'token': token})), 201)
     # returns 403 if password is wrong
     return make_response(
         'Could not verify',
