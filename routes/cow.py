@@ -24,7 +24,7 @@ def get_cow_by_id(public_id, animal_id):
     return jsonify({'cows': animal.simple_serialize})
 
 
-@cows_bp.route('/register-cow', methods=['POST'])
+@cows_bp.route('/register-animal', methods=['POST'])
 @token_required
 def register_cow(public_id):
     current_user = User.query.filter_by(public_id=public_id).first()
