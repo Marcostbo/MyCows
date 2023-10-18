@@ -30,9 +30,12 @@ class Animal(BaseModel):
     animal_type = db.Column(Enum(AnimalType), nullable=False)
 
     # Define the parent relationships to the Kinship model
-    kinship = db.relationship("Animal", backref="kid", lazy=True)
-    mothership = db.relationship("Animal", backref="mother", lazy=True)
-    fathership = db.relationship("Animal", backref="father", lazy=True)
+    kinship = db.relationship("Kinship", primaryjoin="Animal.id == Kinship.kid_id",
+                              backref="kid", lazy=True)
+    mothership = db.relationship("Kinship", primaryjoin="Animal.id == Kinship.mother_id",
+                                 backref="mother", lazy=True)
+    fathership = db.relationship("Kinship", primaryjoin="Animal.id == Kinship.father_id",
+                                 backref="father", lazy=True)
 
     def __repr__(self):
         return f'<Animal {self.name}. Owner {self.owner.name}>'
