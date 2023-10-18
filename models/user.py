@@ -15,5 +15,4 @@ class User(BaseModel):
             'id': self.id,
             'name': self.name,
             'email': self.email,
-            'date_joined': self.date_joined
         }
