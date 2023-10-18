@@ -1,3 +1,2 @@
 from .user import User
-from .cow import Cow
-
+from .animal import Animal
