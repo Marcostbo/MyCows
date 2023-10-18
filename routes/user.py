@@ -82,7 +82,6 @@ def signup():
             name=name,
             email=email,
             password=generate_password_hash(password),
-            date_joined=datetime.now()
         )
         # insert user
         db.session.add(user)

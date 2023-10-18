@@ -1,8 +1,8 @@
 from database import db
+from models.base import BaseModel
 
 
-class Animal(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+class Animal(BaseModel):
     name = db.Column(db.String(50), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     # register_date
