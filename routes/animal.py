@@ -15,9 +15,8 @@ animals_bp = Blueprint('animals', __name__)
 @token_required
 def get_all_animals(public_id):
     current_user = User.query.filter_by(public_id=public_id).first()
-    cows = Animal.query.filter_by(owner=current_user)
-    response = [cow.simple_serialize for cow in cows]
-    return jsonify({'cows': response})
+    animals = Animal.query.filter_by(owner=current_user)
+    return jsonify(AnimalSchema(many=True).dump(obj=animals))
 
 
 @animals_bp.route('/get-animals/<animal_id>', methods=['GET'])
