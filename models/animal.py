@@ -16,9 +16,9 @@ class Animal(BaseModel):
             - animal_type (AnimalType): The type of the animal (e.g., 'Cow', 'Bull', 'Heifer', 'Calf').
 
         Relationships:
-            - kinship (list of Animal): Children of this animal (back reference to Kinship model).
-            - mothership (list of Animal): Animals that are mothers of this animal (back reference to Kinship model).
-            - fathership (list of Animal): Animals that are fathers of this animal (back reference to Kinship model).
+            - kinship (list of Animal): Kinships that this Animal is the Kid (back reference to Kinship model).
+            - mothership (list of Animal): Kinships that this Animal is the Mother (back reference to Kinship model).
+            - fathership (list of Animal): Kinships that this Animal is the Father (back reference to Kinship model).
 
         This model represents animals in a database, with fields for their name, owner, birth date, origin, and type.
         The relationships to the Kinship model define parent-child relationships.
