@@ -5,12 +5,18 @@ from enums.animal import AnimalType
 from schemas.user import UserSchema
 
 
-class AnimalSchema(Schema):
+class BaseAnimalSchema(Schema):
     id = fields.Integer(required=True)
     name = fields.String(required=True)
     birth_date = fields.Date(required=True)
     origin = fields.String()
     animal_type = EnumField(AnimalType)
+
+    class Meta:
+        ordered = True
+
+
+class AnimalSchema(BaseAnimalSchema):
     owner = fields.Nested(UserSchema())
 
     class Meta:

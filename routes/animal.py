@@ -5,7 +5,7 @@ from database import db
 from decorators.authentication import token_required
 from models import User, Animal
 from models.animal import Kinship
-from schemas.animal import AnimalSchema
+from schemas.animal import BaseAnimalSchema, AnimalSchema
 from services.animal import AnimalService
 
 animals_bp = Blueprint('animals', __name__)
@@ -16,7 +16,7 @@ animals_bp = Blueprint('animals', __name__)
 def get_all_animals(public_id):
     current_user = User.query.filter_by(public_id=public_id).first()
     animals = Animal.query.filter_by(owner=current_user)
-    return jsonify(AnimalSchema(many=True).dump(obj=animals))
+    return jsonify(BaseAnimalSchema(many=True).dump(obj=animals))
 
 
 @animals_bp.route('/get-animals/<animal_id>', methods=['GET'])
