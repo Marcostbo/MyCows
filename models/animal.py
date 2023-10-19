@@ -53,3 +53,6 @@ class Kinship(BaseModel):
     kid_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
     mother_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
     father_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
+
+    def __repr__(self):
+        return f'<Animal {self.kid.name}. Parents: {self.mother.name} and {self.father.name}>'

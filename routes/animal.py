@@ -5,6 +5,7 @@ from database import db
 from decorators.authentication import token_required
 from models import User, Animal
 from models.animal import Kinship
+from schemas.animal import AnimalSchema
 from services.animal import AnimalService
 
 animals_bp = Blueprint('animals', __name__)
@@ -24,7 +25,7 @@ def get_all_animals(public_id):
 def get_animal_by_id(public_id, animal_id):
     current_user = User.query.filter_by(public_id=public_id).first()
     animal = Animal.query.filter_by(owner=current_user).filter_by(id=animal_id).first()
-    return jsonify({'cows': animal.simple_serialize})
+    return jsonify(AnimalSchema().dump(obj=animal))
 
 
 @animals_bp.route('/register-animal', methods=['POST'])
@@ -72,4 +73,4 @@ def register_animal(public_id):
         # Register new kinship for animal
         db.session.add(new_kinship)
         db.session.commit()
-    return jsonify({'cow': new_animal.simple_serialize})
+    return jsonify(AnimalSchema().dump(obj=new_animal))
