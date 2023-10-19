@@ -13,5 +13,5 @@ class UserSchema(Schema):
 
 
 class UserTokenSchema(Schema):
-    user = fields.Nested(UserSchema)
+    user = fields.Nested(UserSchema())
     token = fields.String(required=True)
