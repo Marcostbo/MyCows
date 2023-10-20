@@ -4,8 +4,7 @@ from datetime import datetime
 from database import db
 from decorators.authentication import token_required
 from models import User, Animal
-from models.animal import Kinship
-from schemas.animal import BaseAnimalSchema, AnimalSchema
+from schemas.animal import BaseAnimalSchema, AnimalSchema, CreateAnimalSchema
 from services.animal import AnimalService
 
 animals_bp = Blueprint('animals', __name__)
@@ -31,20 +30,20 @@ def get_animal_by_id(public_id, animal_id):
 @token_required
 def register_animal(public_id):
     current_user = User.query.filter_by(public_id=public_id).first()
-    data = request.form
+    validated_data = CreateAnimalSchema().load(request.form)
 
-    name = data.get('name')
-    birth_date = datetime.strptime(data.get('birth_date'), '%Y-%m-%d').date()
-    origin = data.get('origin')
-    animal_type_id = data.get('animal_type_id')
+    name = validated_data.get('name')
+    birth_date = validated_data.get('birth_date')
+    origin = validated_data.get('origin')
+    animal_type_id = validated_data.get('animal_type_id')
 
     mother = father = None
-    if data.get('mother_id'):
-        mother = Animal.query.filter_by(id=data.get('mother_id')).first()
+    if validated_data.get('mother_id'):
+        mother = Animal.query.filter_by(id=validated_data.get('mother_id')).first()
         if not mother:
             return make_response('Invalid ID for animal mother', 400)
-    if data.get('father_id'):
-        father = Animal.query.filter_by(id=data.get('father_id')).first()
+    if validated_data.get('father_id'):
+        father = Animal.query.filter_by(id=validated_data.get('father_id')).first()
         if not father:
             return make_response('Invalid ID for animal father', 400)
 
@@ -62,14 +61,4 @@ def register_animal(public_id):
     # Register new animal for logged user
     db.session.add(new_animal)
     db.session.commit()
-
-    if data.get('mother_id') or data.get('father_id'):
-        new_kinship = Kinship(
-            kid=new_animal,
-            mother=mother,
-            father=father
-        )
-        # Register new kinship for animal
-        db.session.add(new_kinship)
-        db.session.commit()
     return jsonify(AnimalSchema().dump(obj=new_animal))

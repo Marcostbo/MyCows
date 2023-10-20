@@ -26,11 +26,10 @@ class AnimalSchema(BaseAnimalSchema):
 
 
 class CreateAnimalSchema(Schema):
-    id = fields.Integer(required=True)
     name = fields.String(required=True)
     birth_date = fields.Date(format='%Y-%m-%d', required=True)
     origin = fields.String()
-    animal_type = fields.Integer(required=True)
+    animal_type_id = fields.Integer(required=True)
     mother_id = fields.Integer()
     father_id = fields.Integer()
 
@@ -39,8 +38,8 @@ class CreateAnimalSchema(Schema):
         if len(value) < 3:
             raise ValidationError('Email must be more than 3 characters', 'email')
 
-    @validates("animal_type")
-    def validate_animal_type(self, value):
+    @validates("animal_type_id")
+    def validate_animal_type_id(self, value):
         if value not in {enum.value for enum in AnimalType}:
             raise ValidationError("Invalid animal type ID")
 

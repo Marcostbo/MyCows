@@ -15,9 +15,9 @@ def create_app():
     app.register_blueprint(animals_bp)
     
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appdb.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mycowsdb.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    
+
     db.init_app(app)
     migrate = Migrate(app, db)
 

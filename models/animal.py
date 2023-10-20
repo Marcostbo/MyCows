@@ -15,11 +15,6 @@ class Animal(BaseModel):
             - origin (str): The origin or place of birth of the animal.
             - animal_type (AnimalType): The type of the animal (e.g., 'Cow', 'Bull', 'Heifer', 'Calf').
 
-        Relationships:
-            - kinship (list of Animal): Kinships that this Animal is the Kid (back reference to Kinship model).
-            - mothership (list of Animal): Kinships that this Animal is the Mother (back reference to Kinship model).
-            - fathership (list of Animal): Kinships that this Animal is the Father (back reference to Kinship model).
-
         This model represents animals in a database, with fields for their name, owner, birth date, origin, and type.
         The relationships to the Kinship model define parent-child relationships.
         """
@@ -29,30 +24,13 @@ class Animal(BaseModel):
     origin = db.Column(db.String(120))
     animal_type = db.Column(Enum(AnimalType), nullable=False)
 
-    # Define the parent relationships to the Kinship model
-    kinship = db.relationship("Kinship", primaryjoin="Animal.id == Kinship.kid_id",
-                              backref="kid", lazy=True)
-    mothership = db.relationship("Kinship", primaryjoin="Animal.id == Kinship.mother_id",
-                                 backref="mother", lazy=True)
-    fathership = db.relationship("Kinship", primaryjoin="Animal.id == Kinship.father_id",
-                                 backref="father", lazy=True)
+    # Define the parent relationships:
+    father_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
+    mother_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
+
+    # Create relationships for "father" and "mother"
+    father = db.relationship("Animal", remote_side='Animal.id', backref="fathership", foreign_keys=[father_id])
+    mother = db.relationship("Animal", remote_side='Animal.id', backref="mothership", foreign_keys=[mother_id])
 
     def __repr__(self):
         return f'<Animal {self.name}. Owner {self.owner.name}>'
-
-    @property
-    def simple_serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'owner': self.owner.simple_serialize
-        }
-
-
-class Kinship(BaseModel):
-    kid_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
-    mother_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
-    father_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
-
-    def __repr__(self):
-        return f'<Animal {self.kid.name}. Parents: {self.mother.name} and {self.father.name}>'
