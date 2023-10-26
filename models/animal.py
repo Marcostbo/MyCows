@@ -19,10 +19,12 @@ class Animal(BaseModel):
         The relationships to the Kinship model define parent-child relationships.
         """
     name = db.Column(db.String(50), nullable=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     birth_date = db.Column(db.Date)
     origin = db.Column(db.String(120))
     animal_type = db.Column(Enum(AnimalType), nullable=False)
+
+    # Define the Owner relationship with table User
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # Define the parent relationships:
     father_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
