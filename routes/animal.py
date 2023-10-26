@@ -21,8 +21,9 @@ def get_all_animals(public_id):
 @animals_bp.route('/get-animals/<animal_id>', methods=['GET'])
 @token_required
 def get_animal_by_id(public_id, animal_id):
-    current_user = User.query.filter_by(public_id=public_id).first()
-    animal = Animal.query.filter_by(owner=current_user).filter_by(id=animal_id).first()
+    animal = Animal.query.join(User).filter(User.public_id == public_id, Animal.id == animal_id).first()
+    if not animal:
+        abort(403, 'Permission Denied')
     return jsonify(AnimalSchema().dump(obj=animal))
 
 
