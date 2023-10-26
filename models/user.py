@@ -19,7 +19,7 @@ class User(BaseModel):
         Relationships:
             - animals (list of Animal): A list of animals owned by the user (back reference to the Animal model).
         """
-    public_id = db.Column(db.String(50), unique=True)
+    public_id = db.Column(db.String(50), unique=True, index=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(70), unique=True)
     password = db.Column(db.String(80))
