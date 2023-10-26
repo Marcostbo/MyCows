@@ -25,10 +25,5 @@ class User(BaseModel):
     password = db.Column(db.String(80))
     animals = db.relationship('Animal', backref='owner', lazy=True)
 
-    @property
-    def simple_serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'email': self.email,
-        }
+    def __repr__(self):
+        return f'<User {self.name}>'
