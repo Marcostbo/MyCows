@@ -1,10 +1,9 @@
-from flask import Blueprint, jsonify, request, make_response
-from datetime import datetime
+from flask import Blueprint, jsonify, request, make_response, abort
 
 from database import db
 from decorators.authentication import token_required
 from models import User, Animal
-from schemas.animal import BaseAnimalSchema, AnimalSchema, CreateAnimalSchema
+from schemas.animal import BaseAnimalSchema, AnimalSchema, CreateAnimalSchema, UpdateAnimalSchema
 from services.animal import AnimalService
 
 animals_bp = Blueprint('animals', __name__)
@@ -24,6 +23,21 @@ def get_all_animals(public_id):
 def get_animal_by_id(public_id, animal_id):
     current_user = User.query.filter_by(public_id=public_id).first()
     animal = Animal.query.filter_by(owner=current_user).filter_by(id=animal_id).first()
+    return jsonify(AnimalSchema().dump(obj=animal))
+
+
+@animals_bp.route('/update-animal/<animal_id>', methods=['PUT'])
+@token_required
+def update_animal(public_id, animal_id):
+    validated_data = UpdateAnimalSchema().load(request.form)
+
+    animal = Animal.query.join(User).filter(User.public_id == public_id, Animal.id == animal_id).first()
+    if not animal:
+        abort(403, 'Permission Denied')
+
+    animal.update(
+        **validated_data
+    )
     return jsonify(AnimalSchema().dump(obj=animal))
 
 

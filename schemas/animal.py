@@ -47,3 +47,7 @@ class CreateAnimalSchema(Schema):
     def validate_birth_date(self, value):
         if value > datetime.now().date():
             raise ValidationError("Invalid Birhdate. Must not be greater than today")
+
+
+class UpdateAnimalSchema(Schema):
+    name = fields.String()
