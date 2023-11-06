@@ -1,0 +1,25 @@
+from marshmallow import Schema, fields
+
+from schemas.animal import AnimalSchema
+
+
+class VaccineSchema(Schema):
+    name = fields.String()
+
+
+class AnimalVaccinationCreationSchema(Schema):
+    animal_id = fields.String(required=True)
+    vaccine_id = fields.String(required=True)
+    vaccinated_on = fields.Date(required=False)
+
+    class Meta:
+        ordered = False
+
+
+class AnimalVaccinationSchema(Schema):
+    animal = fields.Nested(AnimalSchema())
+    vaccine = fields.Nested(VaccineSchema())
+    vaccinated_on = fields.Date(required=False)
+
+    class Meta:
+        ordered = False
