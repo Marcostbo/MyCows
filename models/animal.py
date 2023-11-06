@@ -4,6 +4,13 @@ from sqlalchemy import Enum
 from enums.animal import AnimalType
 
 
+class AnimalVaccination(BaseModel):
+    __tablename__ = 'animal_vaccination'
+
+    animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
+    vaccine_id = db.Column(db.Integer, db.ForeignKey('vaccine.id'))
+
+
 class Animal(BaseModel):
     """
         Represents an animal in a database.
@@ -25,6 +32,9 @@ class Animal(BaseModel):
 
     # Define the Owner relationship with table User
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    # Define the Vaccinations relationship (Many-to-Many)
+    vaccinations = db.relationship('Vaccine', secondary='animal_vaccination', backref="animals")
 
     # Define the parent relationships:
     father_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
