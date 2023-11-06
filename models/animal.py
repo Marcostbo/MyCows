@@ -9,6 +9,7 @@ class AnimalVaccination(BaseModel):
 
     animal_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
     vaccine_id = db.Column(db.Integer, db.ForeignKey('vaccine.id'))
+    vaccinated_on = db.Column(db.Date)
 
 
 class Animal(BaseModel):
