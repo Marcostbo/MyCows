@@ -7,6 +7,7 @@ from database import db
 from routes.user import user_bp
 from routes.animal import animals_bp
 from routes.vaccine import vaccine_bp
+from routes.ima import ima_bp
 
 
 def create_app():
@@ -15,6 +16,7 @@ def create_app():
     app.register_blueprint(user_bp)
     app.register_blueprint(animals_bp)
     app.register_blueprint(vaccine_bp)
+    app.register_blueprint(ima_bp)
 
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mycowsdb.db'
