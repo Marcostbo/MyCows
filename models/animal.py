@@ -2,6 +2,7 @@ from database import db
 from models.base import BaseModel
 from sqlalchemy import Enum
 from enums.animal import AnimalType
+from datetime import datetime
 
 
 class AnimalVaccination(BaseModel):
@@ -47,3 +48,7 @@ class Animal(BaseModel):
 
     def __repr__(self):
         return f'<Animal {self.name}. Owner {self.owner.name}>'
+
+    @property
+    def age(self) -> int:
+        return int((datetime.now().date() - self.birth_date).days/30)

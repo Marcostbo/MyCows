@@ -11,6 +11,7 @@ class BaseAnimalSchema(Schema):
     id = fields.Integer(required=True)
     name = fields.String(required=True)
     birth_date = fields.Date(format='%Y-%m-%d', required=True)
+    age = fields.Integer()
     origin = fields.String()
     animal_type = EnumField(AnimalType)
 
@@ -51,3 +52,4 @@ class CreateAnimalSchema(Schema):
 
 class UpdateAnimalSchema(Schema):
     name = fields.String()
+    birth_date = fields.Date(format='%Y-%m-%d')
