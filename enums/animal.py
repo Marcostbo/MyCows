@@ -18,6 +18,19 @@ class AnimalType(Enum):
     Calf = 4
 
 
+class AnimalSex(Enum):
+    """
+        An enumeration representing the types of animal sex, including:
+
+        - Male: Male animal.
+        - Female: Female animal.
+
+        This enum is used to categorize and identify the type of animals in a dataset or application.
+    """
+    Male = 1
+    Female = 2
+
+
 class AnimalStatus(Enum):
     """
     Enumeration representing the status of an animal.
