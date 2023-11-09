@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields, validates, validates_schema, ValidationError
 from marshmallow_enum import EnumField
 
-from enums.animal import AnimalType
+from enums.animal import AnimalType, AnimalSex
 from schemas.user import UserSchema
 
 from datetime import datetime
@@ -14,6 +14,7 @@ class BaseAnimalSchema(Schema):
     age = fields.Integer()
     origin = fields.String()
     animal_type = EnumField(AnimalType)
+    animal_sex = EnumField(AnimalSex)
 
     class Meta:
         ordered = True
@@ -53,3 +54,4 @@ class CreateAnimalSchema(Schema):
 class UpdateAnimalSchema(Schema):
     name = fields.String()
     birth_date = fields.Date(format='%Y-%m-%d')
+    animal_sex = EnumField(AnimalSex)
