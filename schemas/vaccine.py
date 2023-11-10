@@ -4,6 +4,7 @@ from schemas.animal import AnimalSchema
 
 
 class VaccineSchema(Schema):
+    id = fields.Integer()
     name = fields.String()
 
 
