@@ -4,6 +4,7 @@ from decorators.authentication import token_required
 from models import Animal, User, Vaccine
 from models.animal import AnimalVaccination
 from schemas.vaccine import AnimalVaccinationCreationSchema, AnimalVaccinationSchema, VaccineSchema
+from services.animal import AnimalService
 
 vaccine_bp = Blueprint('vaccine', __name__)
 

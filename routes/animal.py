@@ -21,9 +21,11 @@ def get_all_animals(public_id: str):
 @animals_bp.route('/get-animals/<animal_id>', methods=['GET'])
 @token_required
 def get_animal_by_id(public_id: str, animal_id: int):
-    animal: Animal = Animal.query.join(User).filter(User.public_id == public_id, Animal.id == animal_id).first()
-    if not animal:
-        abort(403, 'Permission Denied')
+    animal: Animal = Animal.query.join(
+        User, Animal.owner_id == User.id
+    ).filter(
+        User.public_id == public_id, Animal.id == animal_id
+    ).first_or_404(description='Animal not found')
     return jsonify(AnimalSchema().dump(obj=animal))
 
 

@@ -1,7 +1,12 @@
 from enums.animal import AnimalType
+from models import Animal
 
 
 class AnimalService:
+
+    @classmethod
+    def check_permission(cls, animal: Animal, public_id: str) -> bool:
+        return animal.owner.public_id == public_id
 
     @classmethod
     def get_animal_type_by_id(cls, type_id: int) -> AnimalType:
