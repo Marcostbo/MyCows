@@ -72,6 +72,5 @@ def register_animal(public_id):
         father=father
     )
     # Register new animal for logged user
-    db.session.add(new_animal)
-    db.session.commit()
+    new_animal.save()
     return jsonify(AnimalSchema().dump(obj=new_animal))
