@@ -1,10 +1,4 @@
-from marshmallow import Schema, fields, validates, validates_schema, ValidationError
-from marshmallow_enum import EnumField
-
-from enums.animal import AnimalType, AnimalSex
-from schemas.user import UserSchema
-
-from datetime import datetime
+from marshmallow import Schema, fields
 
 
 class ImaReportSchema(Schema):
