@@ -3,10 +3,43 @@ from flask import Blueprint, jsonify, request, make_response, abort
 from decorators.authentication import token_required
 from enums.animal import AnimalType
 from models import User, Animal
-from schemas.animal import BaseAnimalSchema, AnimalSchema, CreateAnimalSchema, UpdateAnimalSchema
+from schemas.animal import BaseAnimalSchema, AnimalSchema, CreateAnimalSchema, UpdateAnimalSchema, BaseDashboardSchema
 from services.animal import AnimalService
+from sqlalchemy import func
 
 animals_bp = Blueprint('animals', __name__)
+
+
+@animals_bp.route('/dashboard', methods=['GET'])
+@token_required
+def get_dashboard(public_id: str):
+    animals = Animal.query.join(User).filter(User.public_id == public_id)
+
+    # Group animals by sex
+    animals_by_sex = animals.with_entities(
+        Animal.animal_sex,
+        func.count(Animal.animal_sex)
+    ).group_by(
+        Animal.animal_sex
+    ).all()
+
+    # Group animals by type
+    animals_by_type = animals.with_entities(
+        Animal.animal_type,
+        func.count(Animal.animal_type)
+    ).group_by(
+        Animal.animal_type
+    ).all()
+
+    sex_data = BaseDashboardSchema(many=True).dump([
+        {'type': item[0].name, 'count': item[1]} for item in animals_by_sex
+    ])
+
+    type_data = BaseDashboardSchema(many=True).dump([
+        {'type': item[0].name, 'count': item[1]} for item in animals_by_type
+    ])
+
+    return jsonify({'animals_by_sex': sex_data, 'animals_by_type': type_data})
 
 
 @animals_bp.route('/get-animals', methods=['GET'])
