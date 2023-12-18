@@ -55,6 +55,7 @@ class UpdateAnimalSchema(Schema):
     name = fields.String()
     birth_date = fields.Date(format='%Y-%m-%d')
     animal_sex = EnumField(AnimalSex)
+    origin = fields.String()
 
 
 class BaseDashboardSchema(Schema):
