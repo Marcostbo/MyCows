@@ -12,10 +12,10 @@ class AnimalType(Enum):
 
         This enum is used to categorize and identify the type of animals in a dataset or application.
     """
-    Cow = 1
-    Bull = 2
-    Heifer = 3
-    Calf = 4
+    Vaca = 1
+    Boi = 2
+    Novilha = 3
+    Bezerro = 4
 
 
 class AnimalSex(Enum):
@@ -27,8 +27,8 @@ class AnimalSex(Enum):
 
         This enum is used to categorize and identify the type of animals in a dataset or application.
     """
-    Male = 1
-    Female = 2
+    Macho = 1
+    Femea = 2
 
 
 class AnimalStatus(Enum):
@@ -42,6 +42,6 @@ class AnimalStatus(Enum):
 
     This enum is used to categorize and identify the current status of animals in a dataset or application.
     """
-    Alive = 1
-    Dead = 2
-    Sold = 3
+    Vivo = 1
+    Morto = 2
+    Vendido = 3
