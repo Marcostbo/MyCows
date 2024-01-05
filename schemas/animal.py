@@ -62,3 +62,7 @@ class UpdateAnimalSchema(Schema):
 class BaseDashboardSchema(Schema):
     type = fields.String()
     count = fields.Integer()
+
+
+class AnimalQuerySchema(Schema):
+    type = fields.String(required=True)

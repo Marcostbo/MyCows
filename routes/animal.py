@@ -1,9 +1,11 @@
 from flask import Blueprint, jsonify, request, make_response, abort
+from marshmallow import ValidationError
 
 from decorators.authentication import token_required
 from enums.animal import AnimalType
 from models import User, Animal
-from schemas.animal import BaseAnimalSchema, AnimalSchema, CreateAnimalSchema, UpdateAnimalSchema, BaseDashboardSchema
+from schemas.animal import BaseAnimalSchema, AnimalSchema, CreateAnimalSchema, UpdateAnimalSchema, BaseDashboardSchema, \
+    AnimalQuerySchema
 from services.animal import AnimalService
 from sqlalchemy import func
 
@@ -47,6 +49,10 @@ def get_dashboard(public_id: str):
 def get_all_animals(public_id: str):
     # current_user = User.query.filter_by(public_id=public_id).first()
     # animals = Animal.query.filter_by(owner=current_user)
+    try:
+        query_params = AnimalQuerySchema().load(data=request.args)
+    except ValidationError as e:
+        return jsonify({'error': str(e)}), 400
     animals = Animal.query.join(User).filter_by(public_id=public_id)
     return jsonify(BaseAnimalSchema(many=True).dump(obj=animals))
 
