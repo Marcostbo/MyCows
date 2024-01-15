@@ -1,4 +1,4 @@
-# MyCows API
+# 🐮 MyCows API
 
 Welcome to the MyCows API! 
 
@@ -8,15 +8,15 @@ This Flask and SQLAlchemy-based application allows you to effortlessly register 
 
 ## Features
 
-### 1. Animal Registration
+### 1. 🐮 Animal Registration
 - **Add Animals:** Register all your animals with details such as name, species, breed, birthdate, and more.
 - **Update Information:** Easily update and edit animal details as needed.
 
-### 2. Vaccination Tracking
+### 2. ⚕️ Vaccination Tracking
 - **Record Vaccinations:** Keep a log of all vaccinations administered to your animals.
 - **Set Alerts:** Receive timely alerts for upcoming vaccinations to ensure your animals' health.
 
-### 3. Financial Management
+### 3. 💰 Financial Management
 - **Record Sales and Purchases:** Track the financial aspect of your animal management by recording sales and purchases.
 - **Cash Flow Monitoring:** Get insights into your financial transactions with a clear cash flow overview.
 
