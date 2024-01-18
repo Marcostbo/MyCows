@@ -37,7 +37,8 @@ class Animal(BaseModel):
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # Define the Vaccinations relationship (Many-to-Many)
-    vaccinations = db.relationship('Vaccine', secondary='animal_vaccination', backref="animals")
+    vaccines = db.relationship('Vaccine', secondary='animal_vaccination', backref="animals")
+    vaccinations = db.relationship('AnimalVaccination', backref='animal')
 
     # Define the parent relationships:
     father_id = db.Column(db.Integer, db.ForeignKey('animal.id'))
