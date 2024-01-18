@@ -23,12 +23,10 @@ def vaccinate_animal(public_id: str):
     animal_id: int = validated_data.get('animal_id')
     vaccine_id: int = validated_data.get('vaccine_id')
 
-    animal: Animal = Animal.query.join(User).filter(User.public_id == public_id, Animal.id == animal_id).first()
-    if not animal:
+    if not any(Animal.query.join(User).filter(User.public_id == public_id, Animal.id == animal_id)):
         abort(403, 'Permission Denied')
 
-    vaccine: Vaccine = Vaccine.query.filter_by(id=vaccine_id).first()
-    if not vaccine:
+    if not any(Vaccine.query.filter_by(id=vaccine_id)):
         abort(400, 'Invalid Vaccine')
 
     animal_vaccination = AnimalVaccination(
@@ -38,9 +36,4 @@ def vaccinate_animal(public_id: str):
     )
     animal_vaccination.save()
 
-    return make_response(jsonify(AnimalVaccinationSchema().dump({
-        'animal': animal,
-        'vaccine': vaccine,
-        'vaccinated_on': validated_data.get('vaccinated_on')}
-    )
-    ), 201)
+    return make_response('', 201)
