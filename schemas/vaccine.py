@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-from schemas.animal import AnimalSchema
+from schemas.animal import AnimalSchema, BaseAnimalSchema
 
 
 class VaccineSchema(Schema):
@@ -18,7 +18,7 @@ class AnimalVaccinationCreationSchema(Schema):
 
 
 class AnimalVaccinationSchema(Schema):
-    animal = fields.Nested(AnimalSchema())
+    animal = fields.Nested(BaseAnimalSchema())
     vaccine = fields.Nested(VaccineSchema())
     vaccinated_on = fields.Date(required=False)
 

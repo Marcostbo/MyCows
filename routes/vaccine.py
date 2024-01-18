@@ -9,7 +9,7 @@ from services.animal import AnimalService
 vaccine_bp = Blueprint('vaccine', __name__)
 
 
-@vaccine_bp.route('/vaccines-list', methods=['GET'])
+@vaccine_bp.route('/vaccines', methods=['GET'])
 def list_vaccines():
     return make_response(
         jsonify(VaccineSchema().dump(obj=Vaccine.query.all(), many=True))
@@ -37,3 +37,14 @@ def vaccinate_animal(public_id: str):
     animal_vaccination.save()
 
     return make_response('', 201)
+
+
+@vaccine_bp.route('/vaccinations', methods=['GET'])
+@token_required
+def get_vaccinations(public_id: str):
+    vaccinations = AnimalVaccination.query\
+        .join(Animal, AnimalVaccination.animal_id == Animal.id)\
+        .join(Vaccine, AnimalVaccination.vaccine_id == Vaccine.id)\
+        .join(User, Animal.owner_id == User.id)\
+        .filter(User.public_id == public_id)
+    return jsonify(AnimalVaccinationSchema().dump(obj=vaccinations, many=True))
