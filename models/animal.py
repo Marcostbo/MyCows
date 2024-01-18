@@ -12,6 +12,9 @@ class AnimalVaccination(BaseModel):
     vaccine_id = db.Column(db.Integer, db.ForeignKey('vaccine.id'))
     vaccinated_on = db.Column(db.Date)
 
+    def __repr__(self):
+        return f'Vaccination of {self.vaccine.name} on {self.animal.name} - {self.vaccinated_on}'
+
 
 class Animal(BaseModel):
     """
