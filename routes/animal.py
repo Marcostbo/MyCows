@@ -44,7 +44,7 @@ def get_dashboard(public_id: str):
     return jsonify({'animals_by_sex': sex_data, 'animals_by_type': type_data})
 
 
-@animals_bp.route('/get-animals', methods=['GET'])
+@animals_bp.route('/animals', methods=['GET'])
 @token_required
 def get_all_animals(public_id: str):
     # current_user = User.query.filter_by(public_id=public_id).first()
@@ -60,7 +60,7 @@ def get_all_animals(public_id: str):
     return jsonify(BaseAnimalSchema(many=True).dump(obj=animals))
 
 
-@animals_bp.route('/get-animals/<animal_id>', methods=['GET'])
+@animals_bp.route('/animals/<animal_id>', methods=['GET'])
 @token_required
 def get_animal_by_id(public_id: str, animal_id: int):
     animal: Animal = Animal.query.join(
@@ -71,7 +71,7 @@ def get_animal_by_id(public_id: str, animal_id: int):
     return jsonify(AnimalSchema().dump(obj=animal))
 
 
-@animals_bp.route('/update-animal/<animal_id>', methods=['PUT'])
+@animals_bp.route('/animals/<animal_id>', methods=['PUT'])
 @token_required
 def update_animal(public_id: str, animal_id: int):
     validated_data = UpdateAnimalSchema().load(request.form)
@@ -86,7 +86,7 @@ def update_animal(public_id: str, animal_id: int):
     return jsonify(AnimalSchema().dump(obj=animal))
 
 
-@animals_bp.route('/register-animal', methods=['POST'])
+@animals_bp.route('/animals', methods=['POST'])
 @token_required
 def register_animal(public_id: str):
     current_user: User = User.query.filter_by(public_id=public_id).first()
