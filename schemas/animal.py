@@ -65,4 +65,4 @@ class BaseDashboardSchema(Schema):
 
 
 class AnimalQuerySchema(Schema):
-    type = fields.String(required=False)
+    name = fields.String(required=False)

@@ -51,9 +51,12 @@ def get_all_animals(public_id: str):
     # animals = Animal.query.filter_by(owner=current_user)
     try:
         query_params = AnimalQuerySchema().load(data=request.args)
+        name = query_params.get('name')
     except ValidationError as e:
         return jsonify({'error': str(e)}), 400
-    animals = Animal.query.join(User).filter_by(public_id=public_id)
+    animals = Animal.query.join(User).filter(User.public_id == public_id)
+    if name:
+        animals = animals.filter(Animal.name == name)
     return jsonify(BaseAnimalSchema(many=True).dump(obj=animals))
 
 
