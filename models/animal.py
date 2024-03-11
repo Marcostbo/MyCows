@@ -29,7 +29,7 @@ class Animal(BaseModel):
 
         This model represents animals in a database, with fields for their name, owner, birth date, origin, and type.
         The relationships to the Kinship model define parent-child relationships.
-        """
+    """
     name = db.Column(db.String(50), nullable=False)
     birth_date = db.Column(db.Date)
     origin = db.Column(db.String(120))

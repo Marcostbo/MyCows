@@ -33,14 +33,14 @@ class AnimalSex(Enum):
 
 class AnimalStatus(Enum):
     """
-    Enumeration representing the status of an animal.
+        Enumeration representing the status of an animal.
 
-    Attributes:
-        - Alive (int): The animal is currently alive.
-        - Dead (int): The animal is deceased.
-        - Sold (int): The animal has been sold.
+        Attributes:
+            - Alive (int): The animal is currently alive.
+            - Dead (int): The animal is deceased.
+            - Sold (int): The animal has been sold.
 
-    This enum is used to categorize and identify the current status of animals in a dataset or application.
+        This enum is used to categorize and identify the current status of animals in a dataset or application.
     """
     Vivo = 1
     Morto = 2
